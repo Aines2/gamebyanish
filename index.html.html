@@ -1,0 +1,341 @@
+<!-- Created by Anish Chau Pradhan. 
+Thank you for Playing.
+This game will be lunch in playstore ASAP! -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz-Game</title>
+
+    <style>
+        /* CSS styles for the quiz */
+        body {
+          font-family: Arial, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          background-image: url(pcnxt.jpg);
+          background-attachment: fixed;
+          background-size: cover;
+          background-repeat: no-repeat;
+        }
+    
+        .container {
+          text-align: center;
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        h1 {
+          margin-bottom: 20px;
+        }
+    
+        #question-container {
+          font-size: 1.2em;
+          margin-bottom: 20px;
+        }
+    
+        #answer-buttons {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-gap: 10px;
+          margin-top: 20px;
+        }
+    
+        .btn {
+          padding: 10px;
+          width: 100%;
+          font-size: 1em;
+        }
+    
+        #next-btn {
+          display: none;
+          margin-top: 20px;
+          padding: 10px 20px;
+          font-size: 1em;
+          background-color: #3498db;
+          color: #fff;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+    
+        #next-btn:hover {
+          background-color: #2980b9;
+        }
+    
+        .score {
+          font-size: 1.2em;
+          margin-top: 20px;
+        }
+    
+        /* Simple animation */
+        @keyframes scoreAnimation {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+          100% { transform: scale(1); }
+        }
+
+        /* Additional styles for retry button */
+        #retry-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #27ae60; /* Change button color as desired */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #retry-btn:hover {
+            background-color: #219653; /* Change button color as desired */
+        }
+
+        /* for Mobile responsiveness */
+        @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+        #answer-buttons {
+            grid-template-columns: 1fr;
+        }
+        .btn {
+            margin-bottom: 10px;
+        }
+        }
+      </style>
+
+</head>
+<body>
+
+<!-- game contents -->
+  <div class="container">
+    <h1> Quiz-Game by Anish Chau</h1>
+    <div id="question-container"></div>
+    <div id="answer-buttons"></div>
+    <button id="next-btn">Next</button>
+    <div class="score" id="score"></div>
+  </div>
+<!-- ended  -->
+
+
+<!-- Game funcions -->
+  <script>
+
+    // question queries
+    const questions = [
+      {
+        question: 'What is the capital of France?',
+        answers: [
+          { text: 'Paris', correct: true },
+          { text: 'London', correct: false },
+          { text: 'Berlin', correct: false },
+          { text: 'Rome', correct: false }
+        ]
+      },
+      {
+        question: 'What is My name?',
+        answers: [
+            { text: 'Anish Chau', correct: true},
+            { text: 'Shahrukh Khan', correct: false},
+            { text: 'Anmol Kc', correct: false},
+            { text: 'Katrina Kaif', correct: false}
+        ]
+      },
+      {
+        question: 'Who is the father of computer?',
+        answers: [
+            { text: 'Charles Babbage', correct: false},
+            { text: 'Anish Chau', correct: true},
+            { text: 'Lady Augusta', correct: false},
+            { text: 'Anmol Kc', correct: false}
+        ]
+      },
+      {
+        question: 'Who is the father of science?',
+        answers: [
+            { text: 'Issac Netwon', correct: false},
+            { text: 'Anish Chau', correct: false},
+            { text: 'Galileo Galilei', correct: true},
+            { text: 'Albert Einstein', correct: false}
+        ]
+      },
+      {
+        question: 'Who is the father of English language?',
+        answers: [
+            { text: 'Daniel sai', correct: false},
+            { text: 'Sani rai', correct: true},
+            { text: 'sweety lenda', correct: false},
+            { text: 'Geoffrey Chaucer', correct: true}
+        ]
+      },
+      {
+        question: ' Who painted the Mona Lisa?',
+        answers: [
+            { text: 'Vincent van Gogh', correct: false},
+            { text: 'Pablo Picasso', correct: false},
+            { text: 'Leonardo da Vinci', correct: true},
+            { text: 'Michelangelo', correct: false}
+        ]
+      },
+      {
+        question: 'Which planet is known as the Red Planet?',
+        answers: [
+            { text: 'Mars', correct: true},
+            { text: 'Sun', correct: false},
+            { text: 'Jupiter', correct: false},
+            { text: 'Earth', correct: false}
+        ]
+      },
+      {
+        question: 'Who wrote the play "Romeo and Juliet?',
+        answers: [
+            { text: 'William Shakespeare', correct: true},
+            { text: ' Charles Dickens', correct: false},
+            { text: 'Jane Austen', correct: false},
+            { text: 'Mark Twain', correct: false}
+        ]
+      },
+      {
+        question: 'What is the powerhouse of the cell?',
+        answers: [
+            { text: 'Nucleus', correct: false},
+            { text: 'Golgi apparatus', correct: false},
+            { text: ' Mitochondria', correct: true},
+            { text: 'Endoplasmic reticulum', correct: false}
+        ]
+      },
+      {
+        question: 'What is the tallest mountain in the world?',
+        answers: [
+            { text: 'Mount Kilimanjaro', correct: false},
+            { text: 'Mount Everest', correct: true},
+            { text: 'K2', correct: false},
+            { text: 'Denali', correct: false}
+        ]
+      },
+    ];
+    // ended here!
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const questionContainer = document.getElementById('question-container');
+    const answerButtons = document.getElementById('answer-buttons');
+    const nextButton = document.getElementById('next-btn');
+    const scoreText = document.getElementById('score');
+
+    nextButton.addEventListener('click', () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        setNextQuestion();
+      } else {
+        endQuiz();
+      }
+    });
+
+    function startQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      nextButton.style.display = 'none';
+      setNextQuestion();
+    }
+
+    function setNextQuestion() {
+      resetState();
+      showQuestion(questions[currentQuestionIndex]);
+    }
+
+    function showQuestion(question) {
+      questionContainer.innerText = question.question;
+      question.answers.forEach(answer => {
+        const button = document.createElement('button');
+        button.innerText = answer.text;
+        button.classList.add('btn');
+        button.addEventListener('click', () => selectAnswer(answer.correct));
+        answerButtons.appendChild(button);
+      });
+    }
+
+    function resetState() {
+      nextButton.style.display = 'none';
+      while (answerButtons.firstChild) {
+        answerButtons.removeChild(answerButtons.firstChild);
+      }
+    }
+
+    function selectAnswer(correct) {
+      if (correct) {
+        score++;
+        scoreText.textContent = `Score: ${score}`;
+        if (score > 30) {
+          scoreText.style.animation = 'scoreAnimation 0.5s ease';
+        }
+      }
+      nextButton.style.display = 'block';
+    }
+
+    function selectAnswer(correct) {
+            if (correct) {
+                score++;
+                scoreText.textContent = `Score: ${score}`;
+                if (score > 30) {
+                    scoreText.style.animation = 'scoreAnimation 0.5s ease';
+                }
+            }
+            if (currentQuestionIndex < questions.length - 1) {
+                nextButton.style.display = 'block';
+            } else {
+                endQuiz();
+            }
+        }
+    const congratulatoryMessages = ['EXCELLENT', 'NICE', 'GOOD', 'GREAT', 'GOAT']; // Array of congratulatory messages
+
+    function endQuiz() {
+        questionContainer.innerText = 'Quiz Finished!';
+        answerButtons.innerHTML = '';
+        nextButton.style.display = 'none';
+        scoreText.textContent = `Final Score: ${score}`;
+
+        if (score === 10) {
+            // If all answers are correct, display a random congratulatory message
+            const randomIndex = Math.floor(Math.random() * congratulatoryMessages.length);
+            scoreText.textContent += ` ${congratulatoryMessages[randomIndex]}!`;
+
+            // Add audio play here
+            const audio = new Audio('path_to_your_audio_file.mp3'); // Replace with your audio file path
+            audio.play();
+
+            setTimeout(celebrate, 500); // Delay the celebration animation
+        } else if (score >= 9) {
+            scoreText.textContent += ' Congratulations! You passed.';
+        } else if (score === 8) {
+            scoreText.textContent += ' Nearly to the finish line. Sorry, next time!';
+        } else {
+            scoreText.textContent += ' Better luck next time.';
+        }
+
+        // Create and display the retry button
+        const retryButton = document.createElement('button');
+        retryButton.id = 'retry-btn';
+        retryButton.textContent = 'Retry';
+        retryButton.addEventListener('click', startQuiz);
+        document.querySelector('.container').appendChild(retryButton);
+    }
+
+    startQuiz(); // Start the quiz
+
+  </script>
+<!-- Game Funcitons end -->
+
+</body>
+</html>
